@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEI Prototype - INCLUSIVE Point</title>
+    <style>
+        :root { --fondo: #ffffff; --texto: #1a202c; --primario: #004687; --fuente-tamano: 16px; }
+        body.alto-contraste { --fondo: #000000; --texto: #ffff00; --primario: #00ffff; }
+        body { background-color: var(--fondo); color: var(--texto); font-family: Arial, sans-serif; font-size: var(--fuente-tamano); line-height: 1.6; margin: 0; padding: 20px; transition: all 0.3s ease; }
+        .panel-accesibilidad { background-color: #f0f4f8; border: 2px solid var(--primario); border-radius: 8px; padding: 15px; margin-bottom: 30px; }
+        body.alto-contraste .panel-accesibilidad { background-color: #121212; border-color: var(--texto); }
+        .panel-titulo { font-weight: bold; margin-bottom: 10px; text-transform: uppercase; font-size: 1.1rem; }
+        .botones-grupo { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-acc { background-color: var(--primario); color: white; border: none; padding: 12px 20px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; min-width: 44px; min-height: 44px; }
+        body.alto-contraste .btn-acc { background-color: #000000; color: var(--texto); border: 2px solid var(--texto); }
+        .contenido-sala { max-width: 800px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="contenido-sala">
+        <header class="panel-accesibilidad" aria-label="Accessibility tools">
+            <div class="panel-titulo">🌐 Accessibility Panel (VEI Prototype / INCLUSIVE Point)</div>
+            <div class="botones-grupo">
+                <button class="btn-acc" onclick="cambiarContraste()">🌓 High Contrast</button>
+                <button class="btn-acc" onclick="modificarTexto(2)">A+ Increase Font</button>
+                <button class="btn-acc" onclick="modificarTexto(-2)">A- Decrease Font</button>
+                <button class="btn-acc" onclick="restablecer()">🔄 Reset</button>
+            </div>
+        </header>
+
+        <main>
+            <h1>✨ Universal Accessibility: Towards a Culture of Inclusion</h1>
+            <p style="font-style: italic; font-size: 1.2rem; color: var(--primario);">“Designing environments for the senses.”</p>
+            
+            <div style="margin: 15px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span>🌐 <strong>Language / Idioma:</strong></span>
+                <a href="index.html" class="btn-acc" style="background-color: #4a5568; padding: 12px 20px; text-decoration: none; display: inline-flex; align-items: center;">🇲🇽 Español</a>
+                <a href="en.html" class="btn-acc" style="background-color: var(--primario); padding: 12px 20px; text-decoration: none; display: inline-flex; align-items: center;">🇺🇸 English</a>
+            </div>
+            
+            <h2>Towards a culture of inclusion</h2>
+            <p>Universal accessibility is not just about complying with a regulation; it is about ensuring that all people, regardless of their conditions, can enjoy culture and knowledge autonomously. I firmly believe that cultural spaces are the heart of our society and must be designed to allow full and equitable participation for everyone.</p>
+            
+            <h2>👩‍⚕️ Consulting and Development:</h2>
+            <p><strong>Lic. Cinthya Verónica Castillejos Arteaga</strong><br>
+            Specialist in Sensory Accessibility and Neuroergonomics.<br>
+            📬 <strong>Contact to implement a Pilot Room:</strong> <a href="mailto:verocvca@gmail.com" style="color: var(--primario);">verocvca@gmail.com</a></p>
+        </main>
+    </div>
+
+    <script>
+        let tamanoActual = 16;
+        function dispararHaptica(patron) { if ("vibrate" in navigator) { navigator.vibrate(patron); } }
+        function cambiarContraste() { document.body.classList.toggle('alto-contraste'); dispararHaptica(); }
+        function modificarTexto(valor) { if ((tamanoActual + valor) >= 12 && (tamanoActual + valor) <= 32) { tamanoActual += valor; document.documentElement.style.setProperty('--fuente-tamano', tamanoActual + 'px'); dispararHaptica(); } }
+        function restablecer() { tamanoActual = 16; document.documentElement.style.setProperty('--fuente-tamano', '16px'); document.body.classList.remove('alto-contraste'); dispararHaptica(); }
+        
+        // English Welcome Voice
+        document.addEventListener('click', function() {
+            let mensaje = new SpeechSynthesisUtterance();
+            mensaje.text = "Welcome to the V E I Prototype, inclusive point. You are at the sensory station. Swipe your screen to find easy-to-read texts or use the accessibility panel.";
+            mensaje.lang = "en-US"; 
+            mensaje.rate = 0.95;    
+            window.speechSynthesis.speak(mensaje);
+            dispararHaptica(); 
+        }, { once: true });
+    </script>
+</body>
+</html>
