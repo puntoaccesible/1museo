@@ -201,20 +201,19 @@ Canción adaptada: "El latido de mi corazón" - Película de Coco (Interpretado 
             📬 <strong>Contacto para implementar una Sala Piloto (5 a 10 piezas):</strong> <a href="mailto:verocvca@gmail.com" style="color: var(--primario);">verocvca@gmail.com</a></p>
         </main>
     </div>
-
     <script>
         let tamanoActual = 16;
-                // Código para que el celular hable con el primer toque en la pantalla
+
+        // Código para que el celular hable con el primer toque en la pantalla
         document.addEventListener('click', function() {
             let mensaje = new SpeechSynthesisUtterance();
             mensaje.text = "Bienvenido al Prototipo V E I, punto incluyente. Estás en la estación sensorial de la obra: 'El Vínculo del Arte Universal'. Esta sala cuenta con iluminación regulada y un ambiente silencioso para tu comodidad. Desliza tu pantalla para encontrar los textos de lectura fácil, el video en Lengua de Señas Mexicana o presiona el botón azul para escuchar la audiodescripción completa.";
-            mensaje.lang = "es-MX"; // Activa la voz en español de México
-            mensaje.rate = 0.95;    // Ritmo pausado y accesible para TDAH
+            mensaje.lang = "es-MX"; 
+            mensaje.rate = 0.95;    
             
             window.speechSynthesis.speak(mensaje);
-            dispararHaptica(); // Manda la vibración de confirmación
+            dispararHaptica([50, 30, 50]); // Manda la vibración aquí directamente
         }, { once: true });
-
 
         function dispararHaptica(patron) {
             if ("vibrate" in navigator) {
@@ -224,7 +223,6 @@ Canción adaptada: "El latido de mi corazón" - Película de Coco (Interpretado 
 
         function cambiarContraste() {
             document.body.classList.toggle('alto-contraste');
-            // Pulso doble rápido: confirma el cambio de contraste para baja visión
             dispararHaptica([50, 30, 50]); 
         }
 
@@ -232,7 +230,6 @@ Canción adaptada: "El latido de mi corazón" - Película de Coco (Interpretado 
             if ((tamanoActual + valor) >= 12 && (tamanoActual + valor) <= 32) {
                 tamanoActual += valor;
                 document.documentElement.style.setProperty('--fuente-tamano', tamanoActual + 'px');
-                // Pulso doble rápido: confirma que la letra subió o bajó de tamaño
                 dispararHaptica([50, 30, 50]);
             }
         }
@@ -241,8 +238,12 @@ Canción adaptada: "El latido de mi corazón" - Película de Coco (Interpretado 
             tamanoActual = 16;
             document.documentElement.style.setProperty('--fuente-tamano', '16px');
             document.body.classList.remove('alto-contraste');
-            // Tres pulsos cortos sucesivos: alerta de que el sistema volvió al inicio
             dispararHaptica([40, 40, 40, 40, 40]);
+        }
+    </script>
+</body>
+</html>
+
         }
     </script>
 </body>
