@@ -204,6 +204,17 @@ Canción adaptada: "El latido de mi corazón" - Película de Coco (Interpretado 
 
     <script>
         let tamanoActual = 16;
+                // Código para que el celular hable con el primer toque en la pantalla
+        document.addEventListener('click', function() {
+            let mensaje = new SpeechSynthesisUtterance();
+            mensaje.text = "Bienvenido al Prototipo V E I, punto incluyente. Estás en la estación sensorial de la obra: 'El Vínculo del Arte Universal'. Esta sala cuenta con iluminación regulada y un ambiente silencioso para tu comodidad. Desliza tu pantalla para encontrar los textos de lectura fácil, el video en Lengua de Señas Mexicana o presiona el botón azul para escuchar la audiodescripción completa.";
+            mensaje.lang = "es-MX"; // Activa la voz en español de México
+            mensaje.rate = 0.95;    // Ritmo pausado y accesible para TDAH
+            
+            window.speechSynthesis.speak(mensaje);
+            dispararHaptica(); // Manda la vibración de confirmación
+        }, { once: true });
+
 
         function dispararHaptica(patron) {
             if ("vibrate" in navigator) {
