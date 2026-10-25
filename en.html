@@ -56,7 +56,6 @@
         function modificarTexto(valor) { if ((tamanoActual + valor) >= 12 && (tamanoActual + valor) <= 32) { tamanoActual += valor; document.documentElement.style.setProperty('--fuente-tamano', tamanoActual + 'px'); dispararHaptica(); } }
         function restablecer() { tamanoActual = 16; document.documentElement.style.setProperty('--fuente-tamano', '16px'); document.body.classList.remove('alto-contraste'); dispararHaptica(); }
         
-        // English Welcome Voice
         document.addEventListener('click', function() {
             let mensaje = new SpeechSynthesisUtterance();
             mensaje.text = "Welcome to the V E I Prototype, inclusive point. You are at the sensory station. Swipe your screen to find easy-to-read texts or use the accessibility panel.";
