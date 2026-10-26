@@ -121,34 +121,52 @@
             </div>
         </header>
 
-        <main>
-            <!-- CONTENEDOR INICIAL DE ORIENTACIÓN -->
+                <main>
+            <!-- CONTENEDOR INICIAL DE ORIENTACIÓN CLÍNICA -->
             <div id="pantalla-estado" style="text-align: center; background-color: #111827; padding: 20px; border-radius: 8px; border: 1px solid #374151; margin-bottom: 20px;">
-                <h3 id="instruccion-titulo" style="margin: 0 0 10px 0; font-size: 1.2rem; color: #fbbf24;">📢 GUÍA RÁPIDA DE ORIENTACIÓN</h3>
+                <h3 id="instruccion-titulo" style="margin: 0 0 10px 0; font-size: 1.2rem; color: #fbbf24;">📢 MAPA DE ESTIMULACIÓN TÁCTIL</h3>
                 <p id="instruccion-guia" style="font-size: 0.95rem; line-height: 1.5; margin: 0; color: #e5e7eb;">
-                    ¡Bienvenido a la Sala 1! Esta interfaz única coordina tu recorrido por las obras de la sala sin necesidad de sensores en los pasillos. Camina siguiendo la pared; al pararte frente a la cédula física toca el botón inferior.
+                    Presiona el botón azul para escuchar la guía de voz y después desliza tu dedo sobre los canales inferiores para percibir la texturización háptica digital.
                 </p>
             </div>
 
-            <!-- TÍTULO DE LA OBRA ACTUAL -->
-            <h3 id="obra-titulo" style="text-align: center; color: var(--primario); margin: 20px 0; font-size: 1.2rem;">Esperando escaneo inicial...</h3>
+            <!-- BOTÓN DE AUDIODESCRIPCIÓN CLÍNICO-SENSORIAL -->
+            <div style="margin: 15px 0; text-align: center;">
+                <button class="btn-acc" style="background-color: #2b6cb0; width: 100%; font-size: 1.1rem; padding: 12px;" onclick="reproducirGuiaVoz()" aria-label="Activar audiodescripción médica de la estación">
+                    🔵 Activar Audiodescripción Sensorial
+                </button>
+            </div>
 
-            <!-- ZONA INTERACTIVA HÁPTICA -->
-            <div class="zona-haptica">
-                <div id="figura-textura" class="figura-textura" onpointerenter="vibrarBorde()" ontouchstart="vibrarBorde()">
-                    Desliza aquí
+            <!-- LABORATORIO HÁPTICO MULTIZONA CON DOS CANALES FIJOS -->
+            <div class="zona-haptica" style="border: 2px dashed #22c55e; height: auto; background-color: #000000; border-radius: 8px; display: flex; gap: 15px; padding: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 25px;">
+                
+                <!-- CANAL 1: ESTIMULACIÓN LISA CONTINUA (Rosa) -->
+                <div id="zona-cuerpo" style="border: 3px solid #ec4899; color: #ec4899; background-color: rgba(236, 72, 153, 0.05); padding: 30px 20px; border-radius: 6px; flex: 1; min-width: 200px; text-align: center; font-weight: bold; cursor: pointer; user-select: none;" 
+                     onpointerenter="vibrarCuerpo()" ontouchstart="vibrarCuerpo()">
+                    <span style="display: block; font-size: 1.1rem; margin-bottom: 5px;">CANAL LISO</span>
+                    <span style="font-size: 0.85rem; font-weight: normal; color: #f472b6;">(Estímulo Continuo Pasivo)</span>
                 </div>
+
+                <!-- CANAL 2: ESTIMULACIÓN RUGOSA INTERMITENTE (Amarillo) -->
+                <div id="zona-cupula" style="border: 3px dashed #fbbf24; color: #fbbf24; background-color: rgba(251, 191, 36, 0.05); padding: 30px 20px; border-radius: 6px; flex: 1; min-width: 200px; text-align: center; font-weight: bold; cursor: pointer; user-select: none;" 
+                     onpointerenter="vibrarCupula()" ontouchstart="vibrarCupula()">
+                    <span style="display: block; font-size: 1.1rem; margin-bottom: 5px;">CANAL RUGOSO</span>
+                    <span style="font-size: 0.85rem; font-weight: normal; color: #fde047;">(Entrenamiento de Agudeza)</span>
+                </div>
+
             </div>
 
-            <!-- CÉDULA ACCESIBLE DINÁMICA -->
-            <div id="cedula-contenedor" style="background-color: #1e293b; border-left: 4px solid var(--primario); padding: 15px; border-radius: 4px; display: none; margin-bottom: 20px;">
-                <p id="cedula-texto" style="font-size: 1rem; margin: 0; line-height: 1.5;"></p>
-                <p id="nota-entorno" style="font-size: 0.85rem; color: #fbbf24; margin: 10px 0 0 0; font-style: italic;"></p>
+            <!-- CÉDULA ACCESIBLE FIJA -->
+            <div id="cedula-contenedor" style="background-color: #1e293b; border-left: 4px solid var(--primario); padding: 15px; border-radius: 6px;">
+                <p id="cedula-texto" style="font-size: 1rem; margin: 0; line-height: 1.5;">
+                    <strong>Cédula de Lectura Fácil (Obra 1):</strong> Esta pieza representa la unión de los canales de comunicación humana a través del sentido de la vista, el oído y el tacto. Diseñada con altos relieves geométricos para la exploración autónoma.
+                </p>
+                <p id="nota-entorno" style="font-size: 0.85rem; color: #fbbf24; margin: 12px 0 0 0; font-style: italic;">
+                    ⚠️ Nota del entorno: Sala con luz tenue (50 lux) y ambiente silencioso para cuidar el bienestar emocional.
+                </p>
             </div>
-
-            <!-- BOTÓN PRINCIPAL DE ACTIVACIÓN -->
-            <button id="btn-principal" class="btn-verde" onclick="avanzarRecorrido()">🟢 Inicializar Recorrido de Sala</button>
         </main>
+
     </div>
 
     <!-- MOTOR LÓGICO DEL SIMULADOR DINÁMICO -->
