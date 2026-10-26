@@ -1,4 +1,159 @@
-        // MOTOR LÓGICO DEL RECORRIDO ACCESIBLE
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo VEI - Sala 1</title>
+    <!-- Evita que el navegador traduzca variables técnicas de JavaScript -->
+    <meta name="google" content="notranslate">
+    
+    <style>
+        :root {
+            --fondo: #0a1128; /* Fondo azul oscuro ergonómico de tu CodePen */
+            --texto: #ffffff;
+            --primario: #00ffff; /* Cyan de alto contraste para baja visión */
+            --fuente-tamano: 16px;
+        }
+        body.alto-contraste {
+            --fondo: #000000;
+            --texto: #ffff00;
+            --primario: #00ffff;
+        }
+        body {
+            background-color: var(--fondo);
+            color: var(--texto);
+            font-family: Arial, sans-serif;
+            font-size: var(--fuente-tamano);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .contenedor-sala1 {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid #1e3a8a;
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #0d1b3e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .panel-accesibilidad {
+            background-color: #112240;
+            border: 2px solid var(--primario);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        .botones-grupo {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-acc {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        body.alto-contraste .btn-acc {
+            background-color: #000000;
+            color: var(--texto);
+            border: 2px solid var(--texto);
+        }
+        .btn-verde {
+            background-color: #22c55e;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 3px 10px rgba(34,197,94,0.3);
+        }
+        .zona-haptica {
+            border: 2px dashed #22c55e;
+            height: 250px;
+            background-color: #000000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .figura-textura {
+            border: 4px solid #ec4899;
+            color: #ec4899;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-sala1">
+        <!-- BOTÓN RETORNO ACCESIBLE -->
+        <a href="index.html" style="color: var(--primario); text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 25px;" aria-label="Volver a la página de inicio">⬅️ Volver al Inicio</a>
+
+        <!-- PANEL DE ACCESIBILIDAD INTERACTIVO -->
+        <header class="panel-accesibilidad" aria-label="Herramientas de accesibilidad de la sala">
+            <div style="font-weight: bold; margin-bottom: 12px; text-transform: uppercase;">🔷 PROTOTIPO INTERACTIVO VEI (SALA 1)</div>
+            <div class="botones-grupo">
+                <button class="btn-acc" onclick="cambiarContraste()">🌓 Contraste</button>
+                <button class="btn-acc" onclick="modificarTexto(2)">A+ Letra</button>
+                <button class="btn-acc" onclick="modificarTexto(-2)">A- Letra</button>
+                <button class="btn-acc" onclick="restablecer()">🔄 Reset</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- CONTENEDOR INICIAL DE ORIENTACIÓN -->
+            <div id="pantalla-estado" style="text-align: center; background-color: #111827; padding: 20px; border-radius: 8px; border: 1px solid #374151; margin-bottom: 20px;">
+                <h3 id="instruccion-titulo" style="margin: 0 0 10px 0; font-size: 1.2rem; color: #fbbf24;">📢 GUÍA RÁPIDA DE ORIENTACIÓN</h3>
+                <p id="instruccion-guia" style="font-size: 0.95rem; line-height: 1.5; margin: 0; color: #e5e7eb;">
+                    ¡Bienvenido a la Sala 1! Esta interfaz única coordina tu recorrido por las obras de la sala sin necesidad de sensores en los pasillos. Camina siguiendo la pared; al pararte frente a la cédula física toca el botón inferior.
+                </p>
+            </div>
+
+            <!-- TÍTULO DE LA OBRA ACTUAL -->
+            <h3 id="obra-titulo" style="text-align: center; color: var(--primario); margin: 20px 0; font-size: 1.2rem;">Esperando escaneo inicial...</h3>
+
+            <!-- ZONA INTERACTIVA HÁPTICA -->
+            <div class="zona-haptica">
+                <div id="figura-textura" class="figura-textura" onpointerenter="vibrarBorde()" ontouchstart="vibrarBorde()">
+                    Desliza aquí
+                </div>
+            </div>
+
+            <!-- CÉDULA ACCESIBLE DINÁMICA -->
+            <div id="cedula-contenedor" style="background-color: #1e293b; border-left: 4px solid var(--primario); padding: 15px; border-radius: 4px; display: none; margin-bottom: 20px;">
+                <p id="cedula-texto" style="font-size: 1rem; margin: 0; line-height: 1.5;"></p>
+                <p id="nota-entorno" style="font-size: 0.85rem; color: #fbbf24; margin: 10px 0 0 0; font-style: italic;"></p>
+            </div>
+
+            <!-- BOTÓN PRINCIPAL DE ACTIVACIÓN -->
+            <button id="btn-principal" class="btn-verde" onclick="avanzarRecorrido()">🟢 Inicializar Recorrido de Sala</button>
+        </main>
+    </div>
+
+    <!-- MOTOR LÓGICO DEL SIMULADOR DINÁMICO -->
+    <script>
+        let tamanoActual = 16;
         let etapaActual = 0;
 
         const datosCuadros = {
@@ -7,19 +162,45 @@
                 cedula: "<strong>Cédula de Lectura Fácil:</strong> Esta pieza representa la unión de los canales de comunicación humana a través de la vista, el oído y el tacto. Diseñada con relieves geométricos.",
                 entorno: "⚠️ Nota del entorno: Sala con luz tenue (50 lux) y ambiente silencioso.",
                 figura: "CÍRCULO (Unión)",
-                estiloFigura: "border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;"
+                estiloFigura: "border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9rem;"
             },
             2: {
                 titulo: "Cuadro 2: Caminos de la Percepción",
                 cedula: "<strong>Cédula de Lectura Fácil:</strong> Esta obra muestra las diferentes formas en que el cerebro procesa el espacio cuando un sentido disminuye y los otros se potencian.",
                 entorno: "⚠️ Nota del entorno: Zona de transición con iluminación natural estable.",
                 figura: "CUADRADO (Soporte)",
-                estiloFigura: "border-radius: 0%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;"
+                estiloFigura: "border-radius: 0%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9rem;"
             }
         };
 
+        function dispararHaptica(patron) {
+            if ("vibrate" in navigator) {
+                navigator.vibrate(patron || [30]);
+            }
+        }
+
+        function cambiarContraste() { 
+            document.body.classList.toggle('alto-contraste'); 
+            dispararHaptica([50, 30, 50]); 
+        }
+
+        function modificarTexto(valor) {
+            if ((tamanoActual + valor) >= 12 && (tamanoActual + valor) <= 32) {
+                tamanoActual += valor;
+                document.documentElement.style.setProperty('--fuente-tamano', tamanoActual + 'px');
+                dispararHaptica([50, 30, 50]);
+            }
+        }
+
+        function restablecer() {
+            tamanoActual = 16;
+            document.documentElement.style.setProperty('--fuente-tamano', '16px');
+            document.body.classList.remove('alto-contraste');
+            dispararHaptica([40, 40, 40, 40, 40]);
+        }
+
         function vibrarBorde() {
-            // Pulso corto al tocar los bordes de la textura digital
+            // Pulso corto al deslizar sobre la textura digital
             dispararHaptica([40]);
         }
 
@@ -29,48 +210,41 @@
             if (etapaActual === 1 || etapaActual === 2) {
                 let cuadro = datosCuadros[etapaActual];
                 
-                // Actualizar interfaz visual
-                document.getElementById("btn-principal").className = "btn-acc";
-                document.getElementById("btn-principal").style.backgroundColor = "#4a5568";
-                document.getElementById("btn-principal").innerHTML = "☑️ Recorrido Inicializado";
-                document.getElementById("instruccion-guia").innerHTML = "Guía rápida: Camina por la sala. Tu teléfono vibrará al llegar a cada cuadro y al tocar sus bordes.";
+                // Actualizar las instrucciones superiores de orientación
+                document.getElementById("instruccion-titulo").innerText = "🔷 RECORRIDO INICIALIZADO";
+                document.getElementById("instruccion-guia").innerHTML = "Guía rápida: Camina por la sala. Tu teléfono vibrará al llegar a cada cuadro y emitirá pulsos hápticos al tocar sus bordes en la caja central.";
                 
+                // Cargar título de la obra y transformar la figura háptica
                 document.getElementById("obra-titulo").innerText = cuadro.titulo;
                 
                 let elFigura = document.getElementById("figura-textura");
                 elFigura.innerHTML = cuadro.figura;
                 elFigura.style.cssText = cuadro.estiloFigura + " border: 4px solid #ec4899; color: #ec4899; font-weight: bold; cursor: pointer;";
                 
+                // Desplegar cédula accesible
                 document.getElementById("cedula-contenedor").style.display = "block";
                 document.getElementById("cedula-texto").innerHTML = cuadro.cedula;
-                document.getElementById("nota-entorno").innerText = cuadro.entorno;
-                
-                // Añadir botón de avanzar abajo si no existe
-                if (!document.getElementById("btn-siguiente")) {
-                    let btnSig = document.createElement("button");
-                    btnSig.id = "btn-siguiente";
-                    btnSig.className = "btn-verde";
-                    btnSig.style.marginTop = "20px";
-                    btnSig.innerHTML = "💻 Caminar al Siguiente Cuadro";
-                    btnSig.onclick = avanzarRecorrido;
-                    document.getElementById("cedula-contenedor").after(btnSig);
-                }
-                
-                // Voz y vibración de confirmación de llegada
-                let voz = new SpeechSynthesisUtterance("Llegaste al " + cuadro.titulo);
-                voz.lang = "es-MX";
-                window.speechSynthesis.speak(voz);
-                dispararHaptica([100, 50, 100]); // Vibración doble de llegada
-                
-            } else {
-                // Fin del recorrido de simulación
-                let vozFin = new SpeechSynthesisUtterance("Recorrido de Sala 1 concluido con éxito.");
-                vozFin.lang = "es-MX";
-                window.speechSynthesis.speak(vozFin);
-                
-                document.getElementById("obra-titulo").innerText = "¡Recorrido Terminado!";
-                document.getElementById("cedula-texto").innerHTML = "Has completado la exploración autónoma de la Sala 1 del modelo modular VEI.";
-                document.getElementById("figura-textura").innerHTML = "🏁";
-                if(document.getElementById("btn-siguiente")) document.getElementById("btn-siguiente").remove();
-            }
-        }
+document.getElementById("nota-entorno").innerText = cuadro.entorno;
+// Cambiar texto e indicación del botón de avance
+document.getElementById("btn-principal").innerHTML = "💻 Caminar al Siguiente Cuadro";
+// Confirmación por voz artificial y vibración de llegada
+let voz = new SpeechSynthesisUtterance("Llegaste al " + cuadro.titulo);
+voz.lang = "es-MX";
+voz.rate = 0.95;
+window.speechSynthesis.speak(voz);
+dispararHaptica([100, 50, 100]); // Vibración doble firme de llegada
+} else {
+// Finalización exitosa del recorrido autónomo
+let vozFin = new SpeechSynthesisUtterance("Recorrido de Sala 1 concluido con éxito.");
+vozFin.lang = "es-MX";
+window.speechSynthesis.speak(vozFin);
+dispararHaptica([60, 40, 60, 40, 100]);
+document.getElementById("instruccion-titulo").innerText = "🏁 RECORRIDO COMPLETADO";
+document.getElementById("instruccion-guia").innerText = "Has completado la exploración autónoma de la Sala 1 del modelo modular del Prototipo VEI.";
+document.getElementById("obra-titulo").innerText = "¡Muchas gracias por su visita!";
+document.getElementById("figura-textura").innerHTML = "🏁";
+document.getElementById("figura-textura").style.borderRadius = "50%";
+document.getElementById("cedula-contenedor").style.display = "none";
+document.getElementById("btn-principal").style.display = "none";
+}
+}
