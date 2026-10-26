@@ -172,12 +172,36 @@
                 estiloFigura: "border-radius: 0%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9rem;"
             }
         };
-
         function dispararHaptica(patron) {
             if ("vibrate" in navigator) {
-                navigator.vibrate(patron || [30]);
+                navigator.vibrate(patron || [40]);
             }
         }
+
+        // Grado 1: Estimulación lisa continua para remanente visual
+        function vibrarCuerpo() {
+            if ("vibrate" in navigator) {
+                navigator.vibrate([300]); // Pulso sostenido y liso
+            }
+        }
+
+        // Grado 2: Estimulación rugosa de alta frecuencia para agudeza táctil
+        function vibrarCupula() {
+            if ("vibrate" in navigator) {
+                navigator.vibrate([40, 40, 40, 40, 40]); // Piquetitos rápidos intermitentes
+            }
+        }
+
+        // FUNCIÓN DE AUDIODESCRIPCIÓN CLÍNICO-SENSORIAL
+        function reproducirGuiaVoz() {
+            let guiaVoz = new SpeechSynthesisUtterance();
+            guiaVoz.text = "Iniciando audio guía sensorial. En la parte inferior de tu pantalla se ha activado un mapa de estimulación táctil dividido en dos canales. Si deslizas tu dedo sobre el bloque izquierdo, sentirás una vibración lisa continua que representa un estímulo de superficie regular. Si deslizas tu dedo sobre el bloque derecho, el teléfono emitirá pulsos rápidos de alta frecuencia, alertando sobre un estímulo con alteraciones o textura rugosa. Explora el mapa libremente para entrenar tu agudeza táctil.";
+            guiaVoz.lang = "es-MX";
+            guiaVoz.rate = 0.95;
+            window.speechSynthesis.speak(guiaVoz);
+            dispararHaptica([60, 40, 60]);
+        }
+
 
         function cambiarContraste() { 
             document.body.classList.toggle('alto-contraste'); 
