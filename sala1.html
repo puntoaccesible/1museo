@@ -1,0 +1,76 @@
+        // MOTOR LÓGICO DEL RECORRIDO ACCESIBLE
+        let etapaActual = 0;
+
+        const datosCuadros = {
+            1: {
+                titulo: "Cuadro 1: El Vínculo del Arte Universal",
+                cedula: "<strong>Cédula de Lectura Fácil:</strong> Esta pieza representa la unión de los canales de comunicación humana a través de la vista, el oído y el tacto. Diseñada con relieves geométricos.",
+                entorno: "⚠️ Nota del entorno: Sala con luz tenue (50 lux) y ambiente silencioso.",
+                figura: "CÍRCULO (Unión)",
+                estiloFigura: "border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;"
+            },
+            2: {
+                titulo: "Cuadro 2: Caminos de la Percepción",
+                cedula: "<strong>Cédula de Lectura Fácil:</strong> Esta obra muestra las diferentes formas en que el cerebro procesa el espacio cuando un sentido disminuye y los otros se potencian.",
+                entorno: "⚠️ Nota del entorno: Zona de transición con iluminación natural estable.",
+                figura: "CUADRADO (Soporte)",
+                estiloFigura: "border-radius: 0%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;"
+            }
+        };
+
+        function vibrarBorde() {
+            // Pulso corto al tocar los bordes de la textura digital
+            dispararHaptica([40]);
+        }
+
+        function avanzarRecorrido() {
+            etapaActual++;
+            
+            if (etapaActual === 1 || etapaActual === 2) {
+                let cuadro = datosCuadros[etapaActual];
+                
+                // Actualizar interfaz visual
+                document.getElementById("btn-principal").className = "btn-acc";
+                document.getElementById("btn-principal").style.backgroundColor = "#4a5568";
+                document.getElementById("btn-principal").innerHTML = "☑️ Recorrido Inicializado";
+                document.getElementById("instruccion-guia").innerHTML = "Guía rápida: Camina por la sala. Tu teléfono vibrará al llegar a cada cuadro y al tocar sus bordes.";
+                
+                document.getElementById("obra-titulo").innerText = cuadro.titulo;
+                
+                let elFigura = document.getElementById("figura-textura");
+                elFigura.innerHTML = cuadro.figura;
+                elFigura.style.cssText = cuadro.estiloFigura + " border: 4px solid #ec4899; color: #ec4899; font-weight: bold; cursor: pointer;";
+                
+                document.getElementById("cedula-contenedor").style.display = "block";
+                document.getElementById("cedula-texto").innerHTML = cuadro.cedula;
+                document.getElementById("nota-entorno").innerText = cuadro.entorno;
+                
+                // Añadir botón de avanzar abajo si no existe
+                if (!document.getElementById("btn-siguiente")) {
+                    let btnSig = document.createElement("button");
+                    btnSig.id = "btn-siguiente";
+                    btnSig.className = "btn-verde";
+                    btnSig.style.marginTop = "20px";
+                    btnSig.innerHTML = "💻 Caminar al Siguiente Cuadro";
+                    btnSig.onclick = avanzarRecorrido;
+                    document.getElementById("cedula-contenedor").after(btnSig);
+                }
+                
+                // Voz y vibración de confirmación de llegada
+                let voz = new SpeechSynthesisUtterance("Llegaste al " + cuadro.titulo);
+                voz.lang = "es-MX";
+                window.speechSynthesis.speak(voz);
+                dispararHaptica([100, 50, 100]); // Vibración doble de llegada
+                
+            } else {
+                // Fin del recorrido de simulación
+                let vozFin = new SpeechSynthesisUtterance("Recorrido de Sala 1 concluido con éxito.");
+                vozFin.lang = "es-MX";
+                window.speechSynthesis.speak(vozFin);
+                
+                document.getElementById("obra-titulo").innerText = "¡Recorrido Terminado!";
+                document.getElementById("cedula-texto").innerHTML = "Has completado la exploración autónoma de la Sala 1 del modelo modular VEI.";
+                document.getElementById("figura-textura").innerHTML = "🏁";
+                if(document.getElementById("btn-siguiente")) document.getElementById("btn-siguiente").remove();
+            }
+        }
