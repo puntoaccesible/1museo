@@ -243,8 +243,16 @@ document.getElementById("instruccion-titulo").innerText = "🏁 RECORRIDO COMPLE
 document.getElementById("instruccion-guia").innerText = "Has completado la exploración autónoma de la Sala 1 del modelo modular del Prototipo VEI.";
 document.getElementById("obra-titulo").innerText = "¡Muchas gracias por su visita!";
 document.getElementById("figura-textura").innerHTML = "🏁";
-document.getElementById("figura-textura").style.borderRadius = "50%";
-document.getElementById("cedula-contenedor").style.display = "none";
-document.getElementById("btn-principal").style.display = "none";
-}
-}
+            }
+        }
+
+        // MOTOR HÁPTICO CORREGIDO
+        function dispararHaptica(patron) {
+            if ("vibrate" in navigator) {
+                // Si recibe un patrón lo usa; si no, da un pulso corto de 40 milisegundos por defecto
+                navigator.vibrate(patron || [40]);
+            }
+        }
+    </script>
+</body>
+</html>
